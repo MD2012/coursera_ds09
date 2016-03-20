@@ -1,4 +1,6 @@
+# this app depends on shiny and dygraphs on the UI
 library(shiny)
+library(dygraphs)
 
 # Define UI for application that draws a timeseries and histogram
 shinyUI(fluidPage(
@@ -9,9 +11,14 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
     sidebarPanel(
+      
+      # we provide a select box 
+      # so the user can switch between 'prices' and 'returns' type of analysis
       selectInput("select", label = "Display", 
                   choices = list("Nasdaq Prices" = "Nasdaq Prices", "Nasdaq Returns" = "Nasdaq Returns"), selected = 1),
       
+      # using conditional panels
+      # we either show the 'prices' Or 'returns' type of user ui selection choices
       conditionalPanel(
         condition = "input.select == 'Nasdaq Prices'"
       ),
@@ -20,11 +27,12 @@ shinyUI(fluidPage(
         
         sliderInput("bins",
                     "Number histogram bins",
-                    min = 30,
-                    max = 90,
-                    value = 60)
+                    min = 40,
+                    max = 50,
+                    value = 45)
       ),
       
+      # should the user have selected 'Nasdaq Prices' we show some description for that analysis in this sidebarpanel
       conditionalPanel(
         condition = "input.select == 'Nasdaq Prices'",
         
@@ -39,6 +47,7 @@ shinyUI(fluidPage(
         
       ),
       
+      # should the user have selected 'Nasdaq Returns' we show some description for that analysis in this sidebarpanel
       conditionalPanel(
         condition = "input.select == 'Nasdaq Returns'",
         
@@ -51,16 +60,18 @@ shinyUI(fluidPage(
       
     ),
     
-    # Show a plot of the generated distribution
+    # Mainpanel where we show either of 2 charts
     mainPanel(
       
       h4(textOutput("header")),
       
+      # should the user have selected 'Nasdaq Prices' we show the dygraph timeseries chart
       conditionalPanel(
         condition = "input.select == 'Nasdaq Prices'",
           dygraphOutput("pricesPlot")
       ),
       
+      # should the user have selected 'Nasdaq Returns' we show the histogram of the log price returns
       conditionalPanel(
         condition = "input.select == 'Nasdaq Returns'",
         plotOutput("returnsPlot")
