@@ -1,0 +1,8 @@
+name: nasdaq_app
+account: md2012
+server: shinyapps.io
+bundleId: 399356
+url: https://md2012.shinyapps.io/nasdaq_app/
+when: 1458501134.96036
+asMultiple: FALSE
+asStatic: FALSE

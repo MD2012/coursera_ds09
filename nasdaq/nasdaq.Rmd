@@ -25,8 +25,7 @@ to finally create an interactive histogram chart of the nasdaq index returns.
 
 ## Get the data
 
-On finance.yahoo.com we find out, that the Nasdaq Composite Index (ticker symbol **IXIC**) historical prices can be downloaded.
-Hence, we store the respective url (**ndq_data_url**)
+On finance.yahoo.com we find out the Nasdaq Composite Index (ticker symbol **IXIC**) historical prices can be downloaded under the url (**ndq_data_url**) we use to csv.read our analysis data from:
 
 ```{r}
 ndq_data_url = "http://real-chart.finance.yahoo.com/table.csv?s=%5EIXIC&d=2&e=20&f=2016&g=d&a=1&b=5&c=1971&ignore=.csv"
@@ -34,7 +33,6 @@ ndq_data = read.csv(ndq_data_url)
 ndq_data = ndq_data[ ,c('Date', 'Close')]
 head(ndq_data)
 ndq_xts = xts(ndq_data[,-1],order.by=as.POSIXct(ndq_data$Date))
-
 ret<-diff(log(ndq_data$Close))
 head(ndq_data)
 ```
@@ -42,7 +40,7 @@ head(ndq_data)
 ## TimeSeries of Prices
 
 ```{r, echo=FALSE}
-dygraph(ndq_xts )
+dygraph(ndq_xts)
 ```
 
 ## Distribution of Log Returns
@@ -53,12 +51,10 @@ inputPanel(
               choices = c(10, 20, 30, 40, 50), selected = 30)
   
 )
-
 renderPlot({
   hist(ret, probability = TRUE, breaks = as.numeric(input$hist_bins),
        xlab = "Log Return", main = "Nasdaq Log Return Distribution")
 })
-
 ```
 
 
